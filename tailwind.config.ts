@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        inter: ['var(--font-inter)'],
+        tajawal: ['var(--font-tajawal)'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -29,6 +29,7 @@ enum AuditAction {
   LOGIN
   LOGOUT
   EXPORT
+  VIEW
 }
 
 enum ReportType {

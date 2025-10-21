@@ -1,71 +1,72 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/db/client';
-import {
-  errorResponse,
-  successResponse,
-  requireAuth,
-  ErrorCodes,
-  parsePaginationParams,
-  createPaginationResponse,
-} from '@/lib/api-utils';
+import { generateReport } from '@/services/report-generator';
 
-export async function GET(req: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const user = await requireAuth(req);
-    const { searchParams } = new URL(req.url);
+    const searchParams = request.nextUrl.searchParams;
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '10');
 
-    const { page, limit, skip, sortBy, sortOrder } = parsePaginationParams(searchParams);
-
-    // Build where clause
-    const where: any = {};
-    
-    const type = searchParams.get('type');
-    const status = searchParams.get('status');
-    const startDate = searchParams.get('startDate');
-    const endDate = searchParams.get('endDate');
-
-    if (type) where.type = type;
-    if (status) where.status = status;
-    
-    if (startDate || endDate) {
-      where.createdAt = {};
-      if (startDate) where.createdAt.gte = new Date(startDate);
-      if (endDate) where.createdAt.lte = new Date(endDate);
-    }
-
-    // Fetch reports
     const [reports, total] = await Promise.all([
       prisma.report.findMany({
-        where,
-        skip,
-        take: limit,
-        orderBy: { [sortBy]: sortOrder },
         include: {
           user: {
             select: {
               id: true,
               name: true,
-              email: true,
             },
           },
         },
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
       }),
-      prisma.report.count({ where }),
+      prisma.report.count(),
     ]);
 
-    return successResponse(createPaginationResponse(reports, total, page, limit));
-  } catch (error) {
-    console.error('Get reports error:', error);
-    
-    if (error instanceof Error && error.message === 'Authentication required') {
-      return errorResponse(ErrorCodes.UNAUTHORIZED, error.message, 401);
+    return NextResponse.json({
+      reports,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
+  } catch (error: any) {
+    console.error('Failed to fetch reports:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch reports' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { userId, config } = body;
+
+    if (!userId || !config) {
+      return NextResponse.json(
+        { error: 'User ID and config are required' },
+        { status: 400 }
+      );
     }
-    
-    return errorResponse(
-      ErrorCodes.INTERNAL_ERROR,
-      'Failed to fetch reports',
-      500,
-      error
+
+    const reportId = await generateReport(userId, config);
+
+    return NextResponse.json({
+      success: true,
+      reportId,
+      message: 'Report generation started',
+    });
+  } catch (error: any) {
+    console.error('Failed to generate report:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to generate report' },
+      { status: 500 }
     );
   }
 }

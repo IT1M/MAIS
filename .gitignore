@@ -32,6 +32,11 @@ yarn-error.log*
 # env files
 .env
 .env*.local
+.env.production
+
+# backups and reports
+/backups
+/public/reports
 
 # vercel
 .vercel

@@ -1,0 +1,98 @@
+/* RTL-specific styles */
+
+/* Flip directional properties for RTL */
+[dir="rtl"] {
+  direction: rtl;
+}
+
+/* Text alignment */
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+/* Margins and Padding - Auto flip with logical properties */
+[dir="rtl"] .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+[dir="rtl"] .mr-auto {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+/* Borders */
+[dir="rtl"] .border-l {
+  border-left: none;
+  border-right: 1px solid;
+}
+
+[dir="rtl"] .border-r {
+  border-right: none;
+  border-left: 1px solid;
+}
+
+/* Rounded corners */
+[dir="rtl"] .rounded-l {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+[dir="rtl"] .rounded-r {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+/* Transforms - Flip icons and arrows */
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
+/* Flexbox */
+[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+/* Grid */
+[dir="rtl"] .grid-flow-col {
+  grid-auto-flow: column dense;
+}
+
+/* Positioning */
+[dir="rtl"] .left-0 {
+  left: auto;
+  right: 0;
+}
+
+[dir="rtl"] .right-0 {
+  right: auto;
+  left: 0;
+}
+
+/* Shadows */
+[dir="rtl"] .shadow-lg {
+  box-shadow: -10px 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+/* Number formatting - Keep LTR for numbers even in RTL */
+[dir="rtl"] .number-ltr {
+  direction: ltr;
+  display: inline-block;
+}
+
+/* Custom utility classes for RTL */
+.rtl\:mr-2[dir="rtl"] {
+  margin-right: 0.5rem;
+}
+
+.rtl\:ml-2[dir="rtl"] {
+  margin-left: 0.5rem;
+}

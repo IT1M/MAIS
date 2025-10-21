@@ -7,11 +7,15 @@
     "build": "prisma generate --schema=./src/db/schema.prisma && next build",
     "start": "next start",
     "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "validate-translations": "node scripts/validate-translations.js",
     "prisma:generate": "prisma generate --schema=./src/db/schema.prisma",
     "prisma:migrate": "prisma migrate dev --schema=./src/db/schema.prisma",
+    "prisma:migrate:deploy": "prisma migrate deploy --schema=./src/db/schema.prisma",
     "prisma:studio": "prisma studio --schema=./src/db/schema.prisma",
     "prisma:seed": "tsx src/db/seed.ts",
-    "db:setup": "prisma migrate dev --schema=./src/db/schema.prisma && npm run prisma:seed"
+    "db:setup": "prisma migrate dev --schema=./src/db/schema.prisma && npm run prisma:seed",
+    "vercel-build": "prisma generate --schema=./src/db/schema.prisma && prisma migrate deploy --schema=./src/db/schema.prisma && next build"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",

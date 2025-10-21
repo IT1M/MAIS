@@ -1,19 +1,61 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/db/client';
-import { updateInventorySchema } from '@/lib/validation';
+import { createInventorySchema } from '@/lib/validation';
 import {
   errorResponse,
   successResponse,
   requireAuth,
   requireRole,
   ErrorCodes,
-  isValidUUID,
 } from '@/lib/api-utils';
 import { logInventoryChange } from '@/services/audit';
 import { AuditAction } from '@prisma/client';
 
-// PATCH /api/inventory/[id] - Update inventory item
-export async function PATCH(
+// GET /api/inventory/[id] - Get single inventory item
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const user = await requireAuth(req);
+    const { id } = params;
+
+    const item = await prisma.inventoryItem.findUnique({
+      where: { id },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!item) {
+      return errorResponse(ErrorCodes.NOT_FOUND, 'Item not found', 404);
+    }
+
+    return successResponse(item);
+  } catch (error) {
+    console.error('Get inventory item error:', error);
+    
+    if (error instanceof Error && error.message === 'Authentication required') {
+      return errorResponse(ErrorCodes.UNAUTHORIZED, error.message, 401);
+    }
+    
+    return errorResponse(
+      ErrorCodes.INTERNAL_ERROR,
+      'Failed to fetch inventory item',
+      500,
+      error
+    );
+  }
+}
+
+// PUT /api/inventory/[id] - Update inventory item
+export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -21,15 +63,32 @@ export async function PATCH(
     const user = await requireRole(req, 'DATA_ENTRY');
     const { id } = params;
 
-    // Validate UUID
-    if (!isValidUUID(id)) {
-      return errorResponse(ErrorCodes.BAD_REQUEST, 'Invalid item ID', 400);
+    // Get existing item
+    const existingItem = await prisma.inventoryItem.findUnique({
+      where: { id },
+    });
+
+    if (!existingItem) {
+      return errorResponse(ErrorCodes.NOT_FOUND, 'Item not found', 404);
+    }
+
+    // Check permissions - only creator, supervisor, or admin can edit
+    if (
+      existingItem.enteredBy !== user.id &&
+      user.role !== 'ADMIN' &&
+      user.role !== 'SUPERVISOR'
+    ) {
+      return errorResponse(
+        ErrorCodes.FORBIDDEN,
+        'You can only edit your own entries',
+        403
+      );
     }
 
     const body = await req.json();
     
     // Validate input
-    const validation = updateInventorySchema.safeParse(body);
+    const validation = createInventorySchema.safeParse(body);
     if (!validation.success) {
       return errorResponse(
         ErrorCodes.VALIDATION_ERROR,
@@ -39,19 +98,12 @@ export async function PATCH(
       );
     }
 
-    // Get old values
-    const oldItem = await prisma.inventoryItem.findUnique({
-      where: { id },
-    });
+    const data = validation.data;
 
-    if (!oldItem) {
-      return errorResponse(ErrorCodes.NOT_FOUND, 'Item not found', 404);
-    }
-
-    // Update item
+    // Update inventory item
     const updatedItem = await prisma.inventoryItem.update({
       where: { id },
-      data: validation.data,
+      data,
       include: {
         user: {
           select: {
@@ -68,7 +120,7 @@ export async function PATCH(
       user.id,
       AuditAction.UPDATE,
       id,
-      oldItem,
+      existingItem,
       updatedItem,
       req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown',
       req.headers.get('user-agent') || 'unknown'
@@ -105,21 +157,16 @@ export async function DELETE(
     const user = await requireRole(req, 'SUPERVISOR');
     const { id } = params;
 
-    // Validate UUID
-    if (!isValidUUID(id)) {
-      return errorResponse(ErrorCodes.BAD_REQUEST, 'Invalid item ID', 400);
-    }
-
-    // Get item before deletion
-    const item = await prisma.inventoryItem.findUnique({
+    // Get existing item
+    const existingItem = await prisma.inventoryItem.findUnique({
       where: { id },
     });
 
-    if (!item) {
+    if (!existingItem) {
       return errorResponse(ErrorCodes.NOT_FOUND, 'Item not found', 404);
     }
 
-    // Delete item
+    // Delete inventory item
     await prisma.inventoryItem.delete({
       where: { id },
     });
@@ -129,13 +176,13 @@ export async function DELETE(
       user.id,
       AuditAction.DELETE,
       id,
-      item,
+      existingItem,
       undefined,
       req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown',
       req.headers.get('user-agent') || 'unknown'
     );
 
-    return new Response(null, { status: 204 });
+    return successResponse({ message: 'Item deleted successfully' });
   } catch (error) {
     console.error('Delete inventory error:', error);
     

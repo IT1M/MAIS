@@ -8,7 +8,22 @@ interface CreateBackupModalProps {
 }
 
 export default function CreateBackupModal({ onClose }: CreateBackupModalProps) {
-  const [config, setConfig] = useState({
+  const [config, setConfig] = useState<{
+    name: string;
+    includeData: {
+      inventoryItems: boolean;
+      auditLogs: boolean;
+      userData: boolean;
+      systemSettings: boolean;
+    };
+    formats: BackupFileType[];
+    dateRange: {
+      enabled: boolean;
+      from: string;
+      to: string;
+    };
+    notes: string;
+  }>({
     name: `backup-${new Date().toISOString().split('T')[0]}`,
     includeData: {
       inventoryItems: true,

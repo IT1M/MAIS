@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { BackupFileType, BackupStatus } from '@prisma/client';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Database } from 'lucide-react';
 
 interface Backup {
   id: string;
@@ -185,8 +187,24 @@ export default function BackupHistoryTable() {
     <div className="bg-white border rounded-lg p-6">
       <h2 className="text-xl font-semibold mb-4">Backup History</h2>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
+      {backups.length === 0 ? (
+        <EmptyState
+          icon={Database}
+          title="No backups created yet"
+          description="Create your first backup to protect your data. Backups can be scheduled automatically or created manually on demand."
+          action={{
+            label: 'Create First Backup',
+            onClick: () => {
+              // Trigger the create backup modal
+              const createButton = document.querySelector('[data-create-backup]') as HTMLButtonElement;
+              if (createButton) createButton.click();
+            },
+          }}
+        />
+      ) : (
+        <>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
@@ -303,6 +321,8 @@ export default function BackupHistoryTable() {
           </button>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }

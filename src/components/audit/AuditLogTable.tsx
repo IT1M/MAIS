@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { AuditAction } from '@prisma/client';
 import { formatDistanceToNow } from 'date-fns';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { FileSearch, RotateCcw } from 'lucide-react';
 
 interface AuditLog {
   id: string;
@@ -172,6 +174,20 @@ export default function AuditLogTable({ filters }: AuditLogTableProps) {
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
+    );
+  }
+
+  if (logs.length === 0) {
+    return (
+      <EmptyState
+        icon={FileSearch}
+        title="No audit logs found for this filter"
+        description="Try adjusting your filters or date range to see more audit logs. All system activities are tracked and will appear here."
+        action={{
+          label: 'Reset Filters',
+          onClick: () => window.location.reload(),
+        }}
+      />
     );
   }
 

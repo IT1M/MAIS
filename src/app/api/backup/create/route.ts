@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    let auditLogs = [];
+    let auditLogs: any[] = [];
     if (includeAudit) {
       auditLogs = await prisma.auditLog.findMany({
         include: {

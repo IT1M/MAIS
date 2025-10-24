@@ -10,7 +10,9 @@ import RejectAnalysisChart from '@/components/charts/RejectAnalysisChart';
 import UserActivityHeatmap from '@/components/charts/UserActivityHeatmap';
 import AIInsightsPanel from '@/components/analytics/AIInsightsPanel';
 import DashboardFilters from '@/components/analytics/DashboardFilters';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { DashboardData, DashboardFilters as Filters } from '@/types/analytics';
+import { BarChart3, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function AnalyticsPage() {
@@ -123,7 +125,7 @@ export default function AnalyticsPage() {
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         </div>
-      ) : data ? (
+      ) : data && data.kpis.totalItems.value > 0 ? (
         <>
           {/* KPI Cards */}
           <KPICards data={data.kpis} />
@@ -145,8 +147,16 @@ export default function AnalyticsPage() {
           <AIInsightsPanel dashboardData={data} />
         </>
       ) : (
-        <div className="text-center text-gray-500 dark:text-gray-400">
-          No data available
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <EmptyState
+            icon={BarChart3}
+            title="Not enough data to show analytics"
+            description="Start adding inventory items to see comprehensive analytics, trends, and insights. You need at least a few entries to generate meaningful charts and statistics."
+            action={{
+              label: 'Add Inventory Items',
+              onClick: () => window.location.href = '/data-entry',
+            }}
+          />
         </div>
       )}
     </div>

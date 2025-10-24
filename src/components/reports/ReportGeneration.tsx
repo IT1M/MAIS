@@ -4,7 +4,41 @@ import { useState } from 'react';
 import { ReportType } from '@prisma/client';
 
 export default function ReportGeneration() {
-  const [config, setConfig] = useState({
+  const [config, setConfig] = useState<{
+    type: ReportType;
+    period: {
+      month: number;
+      year: number;
+      customFrom: string;
+      customTo: string;
+    };
+    content: {
+      summary: boolean;
+      charts: boolean;
+      detailedTable: boolean;
+      rejectAnalysis: boolean;
+      destinationBreakdown: boolean;
+      categoryAnalysis: boolean;
+      aiInsights: boolean;
+      userActivity: boolean;
+      auditTrail: boolean;
+      comparativeAnalysis: boolean;
+    };
+    format: 'pdf' | 'excel' | 'powerpoint';
+    customization: {
+      includeLogo: boolean;
+      includeSignatures: boolean;
+      language: 'en' | 'ar' | 'bilingual';
+      paperSize: 'A4' | 'Letter';
+      orientation: 'portrait' | 'landscape';
+    };
+    email: {
+      enabled: boolean;
+      recipients: string[];
+      subject: string;
+      message: string;
+    };
+  }>({
     type: ReportType.MONTHLY,
     period: {
       month: new Date().getMonth(),
@@ -24,17 +58,17 @@ export default function ReportGeneration() {
       auditTrail: false,
       comparativeAnalysis: false,
     },
-    format: 'pdf' as 'pdf' | 'excel' | 'powerpoint',
+    format: 'pdf',
     customization: {
       includeLogo: true,
       includeSignatures: true,
-      language: 'en' as 'en' | 'ar' | 'bilingual',
-      paperSize: 'A4' as 'A4' | 'Letter',
-      orientation: 'portrait' as 'portrait' | 'landscape',
+      language: 'en',
+      paperSize: 'A4',
+      orientation: 'portrait',
     },
     email: {
       enabled: false,
-      recipients: [] as string[],
+      recipients: [],
       subject: '',
       message: '',
     },

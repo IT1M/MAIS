@@ -27,7 +27,9 @@
     "description": "Description",
     "noData": "No data available",
     "error": "An error occurred",
-    "success": "Operation successful"
+    "success": "Operation successful",
+    "expand": "Expand sidebar",
+    "collapse": "Collapse sidebar"
   },
   "auth": {
     "login": "Log In",
@@ -50,7 +52,32 @@
     "audit": "Audit & History",
     "backup": "Backup & Reports",
     "profile": "Profile",
-    "help": "Help"
+    "help": "Help",
+    "home": "Home",
+    "myActivity": "My Activity"
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "recentActivity": "Recent Activity",
+    "weeklyTrend": "Weekly Trend",
+    "distribution": "Distribution by Category",
+    "totalItemsMonth": "Total Items This Month",
+    "rejectRateMonth": "Reject Rate This Month",
+    "activeUsersToday": "Active Users Today",
+    "quickActions": "Quick Actions",
+    "viewDetails": "View Details",
+    "vsLastPeriod": "vs last period"
+  },
+  "header": {
+    "notifications": "Notifications",
+    "noNotifications": "No new notifications",
+    "allCaughtUp": "You're all caught up!",
+    "markAllRead": "Mark all as read",
+    "viewAll": "View all notifications",
+    "userMenu": "User menu",
+    "changeLanguage": "Change language",
+    "toggleTheme": "Toggle theme",
+    "openMenu": "Open menu"
   },
   "dataEntry": {
     "title": "Inventory Data Entry",
@@ -171,6 +198,10 @@
     "network": "Network error. Please check your connection.",
     "unauthorized": "You are not authorized to perform this action.",
     "notFound": "The requested resource was not found.",
-    "serverError": "Server error. Please try again later."
+    "serverError": "Server error. Please try again later.",
+    "accessDenied": "Access Denied",
+    "accessDeniedMessage": "You do not have permission to access this page. Please contact your administrator if you believe this is an error.",
+    "goToDashboard": "Go to Dashboard",
+    "insufficientPermissions": "Insufficient Permissions"
   }
 }

@@ -1,7 +1,7 @@
 import { prisma } from '@/db/client';
 import { ReportType, ReportStatus } from '@prisma/client';
 import { ReportConfig, ReportData, ReportProgress } from '@/types/report';
-import { generateAIInsights } from './gemini';
+import { analyzeInventory } from './gemini';
 import { createAuditLog } from './audit';
 
 export async function generateReport(
@@ -73,7 +73,24 @@ export async function generateReport(
       });
 
       try {
-        aiInsights = await generateAIInsights(reportData);
+        const byDestination: Record<string, any> = {};
+        reportData.destinationData.forEach(d => {
+          byDestination[d.destination] = { count: d.count, percentage: d.percentage };
+        });
+        
+        const byCategory: Record<string, any> = {};
+        reportData.categoryBreakdown.forEach(c => {
+          byCategory[c.category] = { count: c.count, quantity: c.quantity, rejectRate: c.rejectRate };
+        });
+        
+        const analysis = await analyzeInventory({
+          items,
+          totalQuantity: reportData.summary.totalQuantity,
+          rejectRate: reportData.summary.overallRejectRate,
+          byDestination,
+          byCategory,
+        });
+        aiInsights = JSON.stringify(analysis, null, 2);
       } catch (error) {
         console.error('Failed to generate AI insights:', error);
       }

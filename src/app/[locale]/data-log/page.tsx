@@ -8,7 +8,9 @@ import { Pagination } from '@/components/ui/Pagination';
 import { ExportButton } from '@/components/export/ExportButton';
 import { EditInventoryModal } from '@/components/modals/EditInventoryModal';
 import { DeleteConfirmDialog } from '@/components/modals/DeleteConfirmDialog';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { InventoryItemWithUser } from '@/types/data-log';
+import { PackageOpen, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function DataLogPage() {
@@ -229,28 +231,44 @@ export default function DataLogPage() {
               </div>
             )}
 
-            <InventoryTable
-              items={items}
-              loading={loading}
-              selectedIds={selectedIds}
-              onToggleSelection={toggleSelection}
-              onToggleSelectAll={toggleSelectAll}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              onDuplicate={handleDuplicate}
-              userRole={userRole}
-            />
+            {!loading && items.length === 0 ? (
+              <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                <EmptyState
+                  icon={PackageOpen}
+                  title="No inventory items yet"
+                  description="Get started by adding your first inventory item. You can track quantities, batches, and destinations all in one place."
+                  action={{
+                    label: 'Add Your First Item',
+                    onClick: () => window.location.href = '/data-entry',
+                  }}
+                />
+              </div>
+            ) : (
+              <>
+                <InventoryTable
+                  items={items}
+                  loading={loading}
+                  selectedIds={selectedIds}
+                  onToggleSelection={toggleSelection}
+                  onToggleSelectAll={toggleSelectAll}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  onDuplicate={handleDuplicate}
+                  userRole={userRole}
+                />
 
-            {!loading && items.length > 0 && (
-              <Pagination
-                currentPage={pagination.page}
-                totalPages={totalPages}
-                totalItems={pagination.total}
-                itemsPerPage={pagination.limit}
-                onPageChange={changePage}
-                onItemsPerPageChange={changeLimit}
-                itemsPerPageOptions={itemsPerPageOptions}
-              />
+                {!loading && items.length > 0 && (
+                  <Pagination
+                    currentPage={pagination.page}
+                    totalPages={totalPages}
+                    totalItems={pagination.total}
+                    itemsPerPage={pagination.limit}
+                    onPageChange={changePage}
+                    onItemsPerPageChange={changeLimit}
+                    itemsPerPageOptions={itemsPerPageOptions}
+                  />
+                )}
+              </>
             )}
           </div>
         </div>

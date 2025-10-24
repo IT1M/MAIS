@@ -6,7 +6,7 @@ import { localeLabels, routing } from '@/i18n/routing';
 import { useState, useTransition } from 'react';
 
 export function LanguageSwitcher() {
-  const t = useTranslations('common');
+  const t = useTranslations('header');
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
@@ -25,13 +25,13 @@ export function LanguageSwitcher() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         disabled={isPending}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
-        aria-label="Change language"
+        className="flex items-center gap-2 px-2 md:px-3 py-2 rounded-lg hover:bg-accent transition-colors disabled:opacity-50"
+        aria-label={t('changeLanguage')}
       >
-        <span className="text-xl">
+        <span className="text-lg md:text-xl">
           {locale === 'ar' ? '🇸🇦' : '🇬🇧'}
         </span>
-        <span className="text-sm font-medium">
+        <span className="hidden md:inline text-sm font-medium">
           {localeLabels[locale as keyof typeof localeLabels]}
         </span>
         <svg
@@ -55,14 +55,14 @@ export function LanguageSwitcher() {
             className="fixed inset-0 z-10"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute top-full mt-2 right-0 z-20 w-48 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 shadow-lg overflow-hidden">
+          <div className="absolute top-full mt-2 right-0 z-20 w-48 rounded-lg border bg-background shadow-lg overflow-hidden">
             {routing.locales.map((loc) => (
               <button
                 key={loc}
                 onClick={() => handleLocaleChange(loc)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-accent transition-colors ${
                   locale === loc
-                    ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                    ? 'bg-accent text-primary'
                     : ''
                 }`}
               >

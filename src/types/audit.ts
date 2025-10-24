@@ -2,7 +2,7 @@ import { AuditAction } from '@prisma/client';
 
 export interface AuditLogEntry {
   id: string;
-  timestamp: DateTime;
+  timestamp: Date;
   user: {
     id: string;
     name: string;

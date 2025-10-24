@@ -8,7 +8,15 @@ import CreateBackupModal from './CreateBackupModal';
 
 export default function BackupManagement() {
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [backupConfig, setBackupConfig] = useState({
+  const [backupConfig, setBackupConfig] = useState<{
+    enableAutoBackup: boolean;
+    backupTime: string;
+    backupFormats: BackupFileType[];
+    includeAuditLogs: boolean;
+    retentionDays: number;
+    retentionWeeks: number;
+    retentionMonths: number;
+  }>({
     enableAutoBackup: true,
     backupTime: '02:00',
     backupFormats: [BackupFileType.JSON],
@@ -202,6 +210,7 @@ export default function BackupManagement() {
           </div>
           <button
             onClick={() => setShowCreateModal(true)}
+            data-create-backup
             className="px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 font-medium flex items-center gap-2"
           >
             <span>📦</span>

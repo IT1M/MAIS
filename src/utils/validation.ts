@@ -42,7 +42,31 @@ export const inventoryItemSchema = z.object({
   path: ['reject'],
 });
 
-export const updateInventoryItemSchema = inventoryItemSchema.partial();
+export const updateInventoryItemSchema = z.object({
+  itemName: z.string()
+    .min(2, 'Item name must be at least 2 characters')
+    .max(100, 'Item name must not exceed 100 characters')
+    .transform(val => val.trim())
+    .optional(),
+  batch: z.string()
+    .min(3, 'Batch number must be at least 3 characters')
+    .max(50, 'Batch number must not exceed 50 characters')
+    .regex(/^[a-zA-Z0-9-_]+$/, 'Batch number must be alphanumeric')
+    .transform(val => val.trim())
+    .optional(),
+  quantity: z.number()
+    .int('Quantity must be an integer')
+    .positive('Quantity must be positive')
+    .max(1000000, 'Quantity cannot exceed 1,000,000')
+    .optional(),
+  reject: z.number()
+    .int('Reject count must be an integer')
+    .nonnegative('Reject count cannot be negative')
+    .optional(),
+  destination: z.enum(['MAIS', 'FOZAN']).optional(),
+  category: z.string().max(100).optional(),
+  notes: z.string().max(5000).optional(),
+});
 
 // Report validation schemas
 export const reportSchema = z.object({

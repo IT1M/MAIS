@@ -78,6 +78,7 @@ export async function GET(request: NextRequest) {
           LOGIN: 0,
           LOGOUT: 0,
           EXPORT: 0,
+          VIEW: 0,
         });
       }
       const dayData = activityByDay.get(date)!;

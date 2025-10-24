@@ -108,164 +108,77 @@ v§
   - Apply focus to invalid field
   - _Requirements: 11.6, 11.7_
 
-- [ ] 9. Implement success feedback
-- [ ] 9.1 Add success animations and feedback
-  - Create confetti animation component
-  - Add success toast with action buttons
-  - Implement checkmark animation
-  - Add milestone celebration messages
-  - Update Data Entry form with success actions
-  - _Requirements: 12.1, 12.2, 12.3, 12.4, 12.5_
-
-- [ ] 10. Implement accessibility features
-- [ ] 10.1 Add keyboard navigation support
-  - Implement Tab key navigation
-  - Add Escape key handler for modals
-  - Add forward slash key for search focus
-  - Implement focus trap hook
-  - Add visible focus indicators
-  - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.8, 13.9_
-
-- [ ] 10.2 Add ARIA labels and semantic HTML
-  - Add aria-label to icon-only buttons
-  - Add alt text to all images
-  - Implement aria-live regions
-  - Add proper role attributes
-  - Add aria-current for active navigation
-  - _Requirements: 13.5, 13.6, 13.7_
-
-- [ ] 11. Implement performance optimizations
-- [ ] 11.1 Add code splitting and lazy loading
-  - Lazy load Analytics charts component
-  - Lazy load PDF viewer component
-  - Add loading fallbacks for lazy components
-  - _Requirements: 14.1_
-
-- [ ] 11.2 Optimize images
-  - Replace img tags with Next.js Image component
-  - Add priority loading for above-fold images
-  - Add lazy loading for below-fold images
-  - _Requirements: 14.2_
-
-- [ ] 11.3 Implement API response caching
-  - Create useDataFetch hook with SWR
-  - Configure cache revalidation settings
-  - Implement cache invalidation on mutations
-  - _Requirements: 14.3, 14.4_
-
-- [ ] 11.4 Optimize bundle size
-  - Configure webpack code splitting
-  - Analyze bundle size
-  - Remove unused dependencies
-  - _Requirements: 14.5_
-
-- [ ] 12. Implement inter-page data flow
-- [ ] 12.1 Add navigation links between pages
-  - Add action buttons to Data Entry success toast
-  - Implement filter passing from Analytics to Data Log
-  - Add "View Raw Data" link in Analytics
-  - Add entity links in Audit log modals
-  - Add redirect after backup restore
-  - _Requirements: 15.1, 15.2, 15.3, 15.4, 15.5_
-
-- [ ] 13. Enhance internationalization and RTL support
-- [ ] 13.1 Add RTL layout adjustments
-  - Create RTL CSS file with layout adjustments
-  - Reverse sidebar position for Arabic
-  - Reverse breadcrumb order for Arabic
-  - Align text properly for RTL
-  - Format dates and numbers by locale
-  - Persist language preference
-  - _Requirements: 16.1, 16.2, 16.3, 16.4, 16.5, 16.6_
-
-- [ ] 14. Implement UX enhancements
-- [ ] 14.1 Add animations and transitions
-  - Add page transition animations
-  - Add modal open/close animations
-  - Add toast slide-in animations
-  - Add hover effects to interactive elements
-  - _Requirements: 17.2, 17.3_
-
-- [ ] 14.2 Add tooltips and contextual help
-  - Add tooltips to icon-only buttons
-  - Add help icons with popovers
-  - Implement tooltip delay
-  - _Requirements: 17.1_
-
-- [ ] 14.3 Add progress indicators and confirmations
-  - Add multi-step form progress indicator
-  - Add confirmation dialogs for destructive actions
-  - Add upload progress indicators
-  - _Requirements: 17.4, 17.5_
-
-- [ ] 15. Wrap all authenticated pages with MainLayout
-- [ ] 15.1 Update existing page layouts
-  - Wrap Dashboard page with MainLayout
-  - Wrap Data Entry page with MainLayout
-  - Wrap Data Log page with MainLayout
-  - Wrap Analytics page with MainLayout
-  - Wrap Backup page with MainLayout
-  - Wrap Audit page with MainLayout
-  - Wrap Settings page with MainLayout
-  - _Requirements: 1.1_
-
-- [ ] 16. Production readiness and polish
-- [ ] 16.1 Code quality improvements
-  - Remove console.log statements
-  - Fix TypeScript errors
-  - Fix ESLint warnings
-  - Format code with Prettier
-  - Add JSDoc comments to complex functions
-  - _Requirements: 18.1, 18.2, 18.3, 18.4_
-
-- [ ] 16.2 Add SEO and security headers
-  - Add meta tags for SEO
-  - Add Open Graph tags
-  - Configure security headers in vercel.json
-  - Verify HTTPS configuration
-  - _Requirements: 18.5, 18.6_
-
-- [ ] 16.3 Performance audit
-  - Run Lighthouse audit
-  - Optimize performance score to >90
-  - Fix accessibility issues
-  - _Requirements: 18.7_
-
-- [ ] 17. Create AppContext provider
-- [ ] 17.1 Implement global app context
-  - Create AppContext with user session state
-  - Add notifications state management
+- [x] 9. Create AppContext and wrap pages with MainLayout
+- [x] 9.1 Implement global app context
+  - Create AppContext with user session and notifications state
   - Add notification functions (mark as read, add notification)
   - Wrap app with AppProvider
   - _Requirements: 2.8, 4.6, 4.10_
 
-- [ ] 18. Integration testing and verification
-- [ ] 18.1 Test navigation flows
-  - Test sidebar navigation to all pages
-  - Test breadcrumbs navigation
-  - Test mobile hamburger menu
-  - Test language switching
-  - Test theme switching
-  - _Requirements: All_
+- [x] 9.2 Wrap all authenticated pages with MainLayout
+  - Update all pages (Dashboard, Data Entry, Data Log, Analytics, Backup, Audit, Settings)
+  - _Requirements: 1.1_
 
-- [ ] 18.2 Test authentication and permissions
-  - Test login redirect for protected routes
-  - Test role-based menu visibility
-  - Test access denied for restricted pages
-  - Test session timeout
-  - _Requirements: 7.1, 7.2, 7.3, 3.1, 3.2, 3.3, 3.4_
+- [-] 10. Implement UX enhancements
+- [ ] 10.1 Add success feedback and animations
+  - Create success toast with action buttons and confetti animation
+  - Add page/modal transitions and hover effects
+  - Update Data Entry form with success actions
+  - _Requirements: 12.1, 12.2, 12.3, 12.4, 12.5, 17.2, 17.3_
 
-- [ ] 18.3 Test responsive design
-  - Test sidebar collapse on tablet
-  - Test mobile menu on phone
-  - Test table responsiveness
-  - Test form layouts on mobile
-  - Test touch interactions
-  - _Requirements: 1.2, 1.3, 1.4, 6.1, 6.2, 6.3, 6.4_
+- [ ] 10.2 Add tooltips and progress indicators
+  - Add tooltips to icon-only buttons with help popovers
+  - Add confirmation dialogs for destructive actions
+  - Add progress indicators for multi-step forms and uploads
+  - _Requirements: 17.1, 17.4, 17.5_
 
-- [ ] 18.4 Test accessibility
-  - Test keyboard navigation
-  - Test screen reader announcements
-  - Test focus indicators
-  - Test color contrast
+- [ ] 10.3 Implement inter-page navigation
+  - Add action buttons to Data Entry success toast
+  - Add filter passing from Analytics to Data Log
+  - Add entity links in Audit log modals and redirect after backup restore
+  - _Requirements: 15.1, 15.2, 15.3, 15.4, 15.5_
+
+- [ ] 11. Implement accessibility features
+- [ ] 11.1 Add keyboard navigation and ARIA support
+  - Implement Tab/Escape/forward-slash key handlers
+  - Add aria-label, alt text, aria-live regions, and role attributes
+  - Add visible focus indicators and aria-current for navigation
   - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.5, 13.6, 13.7, 13.8, 13.9_
+
+- [ ] 12. Enhance internationalization and RTL support
+- [ ] 12.1 Add RTL layout adjustments
+  - Create RTL CSS with reversed sidebar/breadcrumbs for Arabic
+  - Format dates and numbers by locale
+  - Persist language preference
+  - _Requirements: 16.1, 16.2, 16.3, 16.4, 16.5, 16.6_
+
+- [ ] 13. Implement performance optimizations
+- [ ] 13.1 Add code splitting and lazy loading
+  - Lazy load Analytics charts and PDF viewer with fallbacks
+  - Replace img tags with Next.js Image component
+  - _Requirements: 14.1, 14.2_
+
+- [ ] 13.2 Implement caching and bundle optimization
+  - Create useDataFetch hook with SWR for API caching
+  - Configure cache revalidation and invalidation
+  - Analyze and optimize bundle size
+  - _Requirements: 14.3, 14.4, 14.5_
+
+- [ ] 14. Production readiness and testing
+- [ ] 14.1 Code quality and SEO
+  - Remove console.log, fix TypeScript/ESLint errors
+  - Add JSDoc comments to complex functions
+  - Add meta tags, Open Graph tags, and security headers
+  - _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5, 18.6_
+
+- [ ] 14.2 Performance and accessibility audit
+  - Run Lighthouse audit and optimize to >90 score
+  - Fix accessibility issues
+  - _Requirements: 18.7_
+
+- [ ] 14.3 Integration testing
+  - Test navigation flows (sidebar, breadcrumbs, mobile menu, language/theme switching)
+  - Test authentication and role-based permissions
+  - Test responsive design on tablet/mobile
+  - Test keyboard navigation and screen reader support
+  - _Requirements: All_

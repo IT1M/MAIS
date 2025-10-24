@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { MainLayout } from '@/components/layout/MainLayout';
 import { DataEntryPage } from '@/components/pages/DataEntryPage';
 
 export const metadata: Metadata = {
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <DataEntryPage />;
+  return (
+    <MainLayout>
+      <DataEntryPage />
+    </MainLayout>
+  );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { MainLayout } from '@/components/layout/MainLayout';
 import BackupManagement from '@/components/backup/BackupManagement';
 import ReportGeneration from '@/components/reports/ReportGeneration';
 import ReportHistoryTable from '@/components/reports/ReportHistoryTable';
@@ -9,8 +10,8 @@ export default function BackupPage() {
   const [activeTab, setActiveTab] = useState<'backup' | 'reports'>('backup');
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    <MainLayout>
+      <div className="max-w-7xl mx-auto p-6">
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900">Backup & Reports</h1>
@@ -97,6 +98,6 @@ export default function BackupPage() {
           </div>
         )}
       </div>
-    </div>
+    </MainLayout>
   );
 }

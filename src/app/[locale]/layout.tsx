@@ -6,6 +6,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing, localeDirections } from '@/i18n/routing';
+import { Providers } from '@/components/providers/Providers';
 import '../../styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -54,30 +55,32 @@ export default async function LocaleLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
-            <Toaster
-              position={dir === 'rtl' ? 'top-left' : 'top-right'}
-              toastOptions={{
-                duration: 4000,
-                style: {
-                  background: 'hsl(var(--card))',
-                  color: 'hsl(var(--card-foreground))',
-                  border: '1px solid hsl(var(--border))',
-                },
-                success: {
-                  iconTheme: {
-                    primary: 'hsl(var(--accent))',
-                    secondary: 'white',
+            <Providers>
+              {children}
+              <Toaster
+                position={dir === 'rtl' ? 'top-left' : 'top-right'}
+                toastOptions={{
+                  duration: 4000,
+                  style: {
+                    background: 'hsl(var(--card))',
+                    color: 'hsl(var(--card-foreground))',
+                    border: '1px solid hsl(var(--border))',
                   },
-                },
-                error: {
-                  iconTheme: {
-                    primary: 'hsl(var(--destructive))',
-                    secondary: 'white',
+                  success: {
+                    iconTheme: {
+                      primary: 'hsl(var(--accent))',
+                      secondary: 'white',
+                    },
                   },
-                },
-              }}
-            />
+                  error: {
+                    iconTheme: {
+                      primary: 'hsl(var(--destructive))',
+                      secondary: 'white',
+                    },
+                  },
+                }}
+              />
+            </Providers>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

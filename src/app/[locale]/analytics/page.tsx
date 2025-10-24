@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { subDays, startOfMonth, endOfMonth, format } from 'date-fns';
+import { MainLayout } from '@/components/layout/MainLayout';
 import KPICards from '@/components/analytics/KPICards';
 import InventoryTrendChart from '@/components/charts/InventoryTrendChart';
 import DestinationChart from '@/components/charts/DestinationChart';
@@ -81,9 +82,10 @@ export default function AnalyticsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
-      {/* Header */}
-      <div className="mb-6">
+    <MainLayout>
+      <div className="p-6">
+        {/* Header */}
+        <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             📊 Analytics Dashboard
@@ -118,47 +120,48 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        <DashboardFilters filters={filters} onChange={setFilters} />
-      </div>
-
-      {loading && !data ? (
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <DashboardFilters filters={filters} onChange={setFilters} />
         </div>
-      ) : data && data.kpis.totalItems.value > 0 ? (
-        <>
-          {/* KPI Cards */}
-          <KPICards data={data.kpis} />
 
-          {/* Charts Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <div className="lg:col-span-2">
-              <InventoryTrendChart data={data.charts.timeSeries} />
-            </div>
-            
-            <DestinationChart data={data.charts.byDestination} />
-            <CategoryChart data={data.charts.byCategory} />
-            
-            <RejectAnalysisChart data={data.charts.timeSeries} />
-            <UserActivityHeatmap data={data.charts.userActivity} />
+          {loading && !data ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           </div>
+        ) : data && data.kpis.totalItems.value > 0 ? (
+          <>
+            {/* KPI Cards */}
+            <KPICards data={data.kpis} />
 
-          {/* AI Insights Panel */}
-          <AIInsightsPanel dashboardData={data} />
-        </>
-      ) : (
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-          <EmptyState
-            icon={BarChart3}
-            title="Not enough data to show analytics"
-            description="Start adding inventory items to see comprehensive analytics, trends, and insights. You need at least a few entries to generate meaningful charts and statistics."
-            action={{
-              label: 'Add Inventory Items',
-              onClick: () => window.location.href = '/data-entry',
-            }}
-          />
-        </div>
-      )}
-    </div>
+            {/* Charts Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div className="lg:col-span-2">
+                <InventoryTrendChart data={data.charts.timeSeries} />
+              </div>
+              
+              <DestinationChart data={data.charts.byDestination} />
+              <CategoryChart data={data.charts.byCategory} />
+              
+              <RejectAnalysisChart data={data.charts.timeSeries} />
+              <UserActivityHeatmap data={data.charts.userActivity} />
+            </div>
+
+            {/* AI Insights Panel */}
+            <AIInsightsPanel dashboardData={data} />
+          </>
+        ) : (
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            <EmptyState
+              icon={BarChart3}
+              title="Not enough data to show analytics"
+              description="Start adding inventory items to see comprehensive analytics, trends, and insights. You need at least a few entries to generate meaningful charts and statistics."
+              action={{
+                label: 'Add Inventory Items',
+                onClick: () => window.location.href = '/data-entry',
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </MainLayout>
   );
 }

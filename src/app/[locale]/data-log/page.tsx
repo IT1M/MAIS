@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { MainLayout } from '@/components/layout/MainLayout';
 import { useDataLog } from '@/hooks/useDataLog';
 import { InventoryFilters } from '@/components/filters/InventoryFilters';
 import { InventoryTable } from '@/components/tables/InventoryTable';
@@ -124,7 +125,7 @@ export default function DataLogPage() {
   const totalPages = Math.ceil(pagination.total / pagination.limit);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <MainLayout>
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-6">
@@ -293,6 +294,6 @@ export default function DataLogPage() {
           }
         }}
       />
-    </div>
+    </MainLayout>
   );
 }

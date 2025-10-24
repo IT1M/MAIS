@@ -6,25 +6,14 @@ import { useTranslations } from 'next-intl';
 import { formatDistanceToNow } from 'date-fns';
 import { enUS, ar } from 'date-fns/locale';
 import { useLocale } from 'next-intl';
-
-interface Notification {
-  id: string;
-  type: 'info' | 'success' | 'warning' | 'error';
-  title: string;
-  message: string;
-  timestamp: Date;
-  read: boolean;
-  actionUrl?: string;
-}
+import { useApp, Notification } from '@/contexts/AppContext';
 
 export function NotificationBell() {
   const t = useTranslations('header');
   const locale = useLocale();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const { notifications, unreadNotificationsCount, markNotificationAsRead, markAllNotificationsAsRead } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const unreadCount = notifications.filter(n => !n.read).length;
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -40,49 +29,12 @@ export function NotificationBell() {
     }
   }, [isOpen]);
 
-  // Mock notifications - in production, fetch from API
-  useEffect(() => {
-    // This would be replaced with actual API call
-    const mockNotifications: Notification[] = [
-      {
-        id: '1',
-        type: 'success',
-        title: 'Item Added',
-        message: 'New inventory item has been added successfully',
-        timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
-        read: false,
-      },
-      {
-        id: '2',
-        type: 'info',
-        title: 'Report Generated',
-        message: 'Monthly inventory report is ready for download',
-        timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-        read: false,
-        actionUrl: '/reports',
-      },
-      {
-        id: '3',
-        type: 'warning',
-        title: 'Low Stock Alert',
-        message: 'Some items are running low on stock',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-        read: true,
-      },
-    ];
-    setNotifications(mockNotifications);
-  }, []);
-
   const markAsRead = (id: string) => {
-    setNotifications(prev =>
-      prev.map(n => n.id === id ? { ...n, read: true } : n)
-    );
+    markNotificationAsRead(id);
   };
 
   const markAllAsRead = () => {
-    setNotifications(prev =>
-      prev.map(n => ({ ...n, read: true }))
-    );
+    markAllNotificationsAsRead();
   };
 
   const getTypeColor = (type: Notification['type']) => {
@@ -113,9 +65,9 @@ export function NotificationBell() {
         aria-label={t('notifications')}
       >
         <Bell className="h-5 w-5" />
-        {unreadCount > 0 && (
+        {unreadNotificationsCount > 0 && (
           <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white">
-            {unreadCount > 9 ? '9+' : unreadCount}
+            {unreadNotificationsCount > 9 ? '9+' : unreadNotificationsCount}
           </span>
         )}
       </button>
@@ -125,7 +77,7 @@ export function NotificationBell() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b">
             <h3 className="font-semibold">{t('notifications')}</h3>
-            {unreadCount > 0 && (
+            {unreadNotificationsCount > 0 && (
               <button
                 onClick={markAllAsRead}
                 className="text-xs text-primary hover:underline"

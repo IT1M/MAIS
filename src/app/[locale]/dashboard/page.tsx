@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { auth } from '@/services/auth';
 import { prisma } from '@/db/client';
 import { redirect } from 'next/navigation';
+import { MainLayout } from '@/components/layout/MainLayout';
 import { WelcomeCard } from '@/components/dashboard/WelcomeCard';
 import { QuickActionsGrid } from '@/components/dashboard/QuickActionsGrid';
 import { StatCard } from '@/components/dashboard/StatCard';
@@ -171,52 +172,54 @@ export default async function DashboardPage({
   const dashboardData = await getDashboardData(user.id, user.role as UserRole);
 
   return (
-    <div className="space-y-6 p-6">
-      {/* Welcome Card */}
-      <WelcomeCard userName={user.name || 'User'} userRole={user.role as UserRole} />
+    <MainLayout>
+      <div className="space-y-6 p-6">
+        {/* Welcome Card */}
+        <WelcomeCard userName={user.name || 'User'} userRole={user.role as UserRole} />
 
-      {/* Quick Actions Grid */}
-      <QuickActionsGrid userRole={user.role as UserRole} locale={locale} />
+        {/* Quick Actions Grid */}
+        <QuickActionsGrid userRole={user.role as UserRole} locale={locale} />
 
-      {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <StatCard
-          title="Total Items This Month"
-          value={dashboardData.stats.totalItems}
-          icon={Package}
-          trend="up"
-          change={12.5}
-        />
-        <StatCard
-          title="Reject Rate This Month"
-          value={`${dashboardData.stats.rejectRate}%`}
-          icon={AlertCircle}
-          trend={parseFloat(dashboardData.stats.rejectRate) > 5 ? 'down' : 'up'}
-          change={-2.3}
-        />
-        <StatCard
-          title="Active Users Today"
-          value={dashboardData.stats.activeUsers}
-          icon={Users}
-          trend="neutral"
+        {/* Summary Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <StatCard
+            title="Total Items This Month"
+            value={dashboardData.stats.totalItems}
+            icon={Package}
+            trend="up"
+            change={12.5}
+          />
+          <StatCard
+            title="Reject Rate This Month"
+            value={`${dashboardData.stats.rejectRate}%`}
+            icon={AlertCircle}
+            trend={parseFloat(dashboardData.stats.rejectRate) > 5 ? 'down' : 'up'}
+            change={-2.3}
+          />
+          <StatCard
+            title="Active Users Today"
+            value={dashboardData.stats.activeUsers}
+            icon={Users}
+            trend="neutral"
+          />
+        </div>
+
+        {/* Recent Activity and Mini Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <RecentActivityTimeline items={dashboardData.recentActivity} />
+          </div>
+          <div className="space-y-6">
+            <RoleBasedContent userRole={user.role as UserRole} locale={locale} />
+          </div>
+        </div>
+
+        {/* Mini Charts */}
+        <MiniCharts
+          trendData={dashboardData.trendData}
+          distributionData={dashboardData.distributionData}
         />
       </div>
-
-      {/* Recent Activity and Mini Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <RecentActivityTimeline items={dashboardData.recentActivity} />
-        </div>
-        <div className="space-y-6">
-          <RoleBasedContent userRole={user.role as UserRole} locale={locale} />
-        </div>
-      </div>
-
-      {/* Mini Charts */}
-      <MiniCharts
-        trendData={dashboardData.trendData}
-        distributionData={dashboardData.distributionData}
-      />
-    </div>
+    </MainLayout>
   );
 }

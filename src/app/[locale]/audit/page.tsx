@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { MainLayout } from '@/components/layout/MainLayout';
 import AuditLogTable from '@/components/audit/AuditLogTable';
 import AuditFilters from '@/components/audit/AuditFilters';
 
@@ -43,8 +44,8 @@ export default function AuditPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    <MainLayout>
+      <div className="max-w-7xl mx-auto p-6">
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900">Audit Trail</h1>
@@ -114,6 +115,6 @@ export default function AuditPage() {
           </div>
         </div>
       </div>
-    </div>
+    </MainLayout>
   );
 }

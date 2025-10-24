@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { MainLayout } from '@/components/layout/MainLayout';
 import { ProfileSettings } from '@/components/settings/ProfileSettings';
 import { SecuritySettings } from '@/components/settings/SecuritySettings';
 import { UserManagement } from '@/components/settings/UserManagement';
@@ -74,7 +75,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <MainLayout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -140,6 +141,6 @@ export default function SettingsPage() {
           </main>
         </div>
       </div>
-    </div>
+    </MainLayout>
   );
 }

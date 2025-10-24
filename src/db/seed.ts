@@ -42,6 +42,29 @@ async function main() {
 
     console.log('✅ Admin user created:', adminUser.email);
 
+    // Create Yazeed admin user
+    const yazeedEmail = 'yazeed@mais.com';
+    const existingYazeed = await prisma.user.findUnique({
+        where: { email: yazeedEmail },
+    });
+
+    if (!existingYazeed) {
+        const yazeedHashedPassword = await bcrypt.hash('Yazeed12345', 12);
+        await prisma.user.create({
+            data: {
+                email: yazeedEmail,
+                name: 'Yazeed',
+                password: yazeedHashedPassword,
+                role: UserRole.ADMIN,
+                isActive: true,
+                preferences: {},
+            },
+        });
+        console.log('✅ Yazeed admin user created:', yazeedEmail);
+    } else {
+        console.log('ℹ️  Yazeed admin user already exists:', yazeedEmail);
+    }
+
     // Create sample users
     const dataEntryUser = await prisma.user.upsert({
         where: { email: 'dataentry@mais.sa' },

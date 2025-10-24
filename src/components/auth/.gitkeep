@@ -1,0 +1,8 @@
+# Authentication Components Directory
+
+This directory contains all authentication-related UI components for the MAIS Inventory Management System.
+
+Components will include:
+- HomeLoginForm.tsx - Login form for the home page
+- LoginForm.tsx - Login form for the dedicated login page
+- ForgotPasswordForm.tsx - Password reset request form
